@@ -6,3 +6,30 @@ CREATE TABLE posts (
     title TEXT NOT NULL,
     content TEXT NOT NULL
 );
+
+CREATE TABLE Item (
+	itemID SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	itemName VARCHAR(90) NOT NULL,
+	itemType VARCHAR(45) NOT NULL,
+	PRIMARY KEY (itemID),
+	CONSTRAINT chkItemType CHECK (itemType IN ('books', 'periodicals', 'recordings', 'vIDeos'))
+);
+
+CREATE TABLE Author (
+	authorID SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	authorLastName VARCHAR(45) NOT NULL,
+	authorFirstName VARCHAR(45) NOT NULL,
+	PRIMARY KEY (authorID)
+);
+
+CREATE TABLE ItemAuthor (
+	itemID SMALLINT UNSIGNED NOT NULL,
+	authorID SMALLINT UNSIGNED NOT NULL,
+	PRIMARY KEY (itemID, authorID),
+	CONSTRAINT fk_ItemAuthor_Item FOREIGN KEY (itemID) REFERENCES Item (itemID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE,
+	CONSTRAINT fk_ItemAuthor_Author FOREIGN KEY (authorID) REFERENCES Author (authorID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE
+);
