@@ -37,15 +37,19 @@
   <body>
     <table>
       <tr>
-        <th>Post ID</th>
-        <th>Date Created</th>
-        <th>Title</th>
+        <th>Item ID</th>
+        <th>Item Name</th>
+        <th>Item Type</th>
+        <th>Author Last Name</th>
+        <th>Author First Name</th>
       </tr>
       {% for row in posts %}
         <tr>
           <td>{{ row[0] }}</td>
           <td>{{ row[1] }}</td>
           <td>{{ row[2] }}</td>
+          <td>{{ row[3] }}</td>
+          <td>{{ row[4] }}</td>
         </tr>
       {% endfor %}
     </table>

@@ -84,6 +84,6 @@ def delete(id):
 @app.route('/table')
 def display_table():
     conn = get_db_connection()
-    data = conn.execute('SELECT * FROM posts').fetchall()
+    data = conn.execute("SELECT i.itemID, i.itemName, i.itemType, a.authorLastName, a.authorFirstName FROM Item AS i JOIN ItemAuthor AS ia ON i.itemID = ia.itemID JOIN Author AS a ON ia.authorID = a.authorID;").fetchall()
     conn.close()
     return render_template('table.html', posts=data)
