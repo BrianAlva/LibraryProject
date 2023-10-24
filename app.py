@@ -80,7 +80,7 @@ def delete(id):
     conn.close()
     flash('"{}" was successfully deleted!'.format(post['title']))
     return redirect(url_for('index'))
-
+#Notes
 @app.route('/table')
 def display_table():
     conn = get_db_connection()
