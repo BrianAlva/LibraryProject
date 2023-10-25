@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <head>
+    <title>Table Example</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 800px; /* Adjust the width as needed */
+        margin: 0 auto; /* Center the table horizontally */
+        margin-bottom: 40px; /* Add space below each table */
+        margin-top: 20px; /* Add space below each table */
+      }
+
+      table, th, td {
+        border: 1px solid #ccc;
+      }
+
+      th, td {
+        padding: 10px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f0f0f0;
+        font-weight: bold;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+
+      tr:hover {
+        background-color: #e0e0e0;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <th>Item ID</th>
+        <th>Item Name</th>
+        <th>Item Type</th>
+      </tr>
+      {% for row in itemData %}
+        <tr>
+          <td>{{ row[0] }}</td>
+          <td>{{ row[1] }}</td>
+          <td>{{ row[2] }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+    <table>
+        <tr>
+          <th>Author ID</th>
+          <th>Author Last Name</th>
+          <th>Author First Name</th>
+        </tr>
+        {% for row in authorData %}
+          <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+      <table>
+        <tr>
+          <th>Item ID</th>
+          <th>Author ID</th>
+        </tr>
+        {% for row in itemAuthorData %}
+          <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+  </body>
+</html>
+
+{% endblock %}

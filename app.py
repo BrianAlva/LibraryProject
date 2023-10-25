@@ -87,3 +87,13 @@ def display_table():
     data = conn.execute("SELECT i.itemID, i.itemName, i.itemType, a.authorLastName, a.authorFirstName FROM Item AS i JOIN ItemAuthor AS ia ON i.itemID = ia.itemID JOIN Author AS a ON ia.authorID = a.authorID;").fetchall()
     conn.close()
     return render_template('table.html', posts=data)
+
+
+@app.route('/manytables')
+def display_manytables():
+    conn = get_db_connection()
+    authorData = conn.execute("SELECT * FROM Author;").fetchall()
+    itemAuthorData = conn.execute("SELECT * FROM ItemAuthor;").fetchall()
+    itemData = conn.execute("SELECT * FROM ITEM;").fetchall()
+    conn.close()
+    return render_template('manytables.html', authorData=authorData, itemAuthorData=itemAuthorData, itemData=itemData)
