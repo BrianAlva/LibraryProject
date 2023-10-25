@@ -1,8 +1,10 @@
 DROP TABLE IF EXISTS posts;
+DROP TABLE IF EXISTS Patron;
 DROP TABLE IF EXISTS Item;
 DROP TABLE IF EXISTS Author;
 DROP TABLE IF EXISTS ItemAuthor;
-
+DROP TABLE IF EXISTS checkoutTransaction;
+DROP TABLE IF EXISTS checkoutTransactionItem;
 
 CREATE TABLE posts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -11,22 +13,63 @@ CREATE TABLE posts (
     content TEXT NOT NULL
 );
 
+CREATE TABLE Patron (
+	patronID SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	patronLastName VARCHAR(45) NOT NULL,
+	patronFirstName VARCHAR(45) NOT NULL,
+	patronAddress VARCHAR(90) NOT NULL,
+	patronLastRenewed DATETIME DEFAULT NOW() ON UPDATE NOW(),
+	paymentBalence DECIMAL(13,2) NOT NULL DEFAULT 0.00,
+	PRIMARY KEY (patronID)
+);
+
 CREATE TABLE Item (
-    itemID INTEGER PRIMARY KEY AUTOINCREMENT,
-    itemName TEXT NOT NULL,
-    itemType TEXT CHECK (itemType IN ('books', 'periodicals', 'recordings', 'videos')) NOT NULL
+	itemID SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	itemName VARCHAR(90) NOT NULL,
+	itemType VARCHAR(45) NOT NULL,
+	PRIMARY KEY (itemID),
+	CONSTRAINT chkItemType CHECK (itemType IN ('books', 'periodicals', 'recordings', 'videos'))
 );
 
 CREATE TABLE Author (
-    authorID INTEGER PRIMARY KEY AUTOINCREMENT,
-    authorLastName TEXT NOT NULL,
-    authorFirstName TEXT NOT NULL
+	authorID SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	authorLastName VARCHAR(45) NOT NULL,
+	authorFirstName VARCHAR(45) NOT NULL,
+	PRIMARY KEY (authorID)
 );
 
 CREATE TABLE ItemAuthor (
-    itemID INTEGER NOT NULL,
-    authorID INTEGER NOT NULL,
-    PRIMARY KEY (itemID, authorID),
-    FOREIGN KEY (itemID) REFERENCES Item (itemID) ON DELETE RESTRICT ON UPDATE CASCADE,
-    FOREIGN KEY (authorID) REFERENCES Author (authorID) ON DELETE RESTRICT ON UPDATE CASCADE
+	itemID SMALLINT UNSIGNED NOT NULL,
+	authorID SMALLINT UNSIGNED NOT NULL,
+	PRIMARY KEY (itemID, authorID),
+	CONSTRAINT fk_ItemAuthor_Item FOREIGN KEY (itemID) REFERENCES Item (itemID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE,
+	CONSTRAINT fk_ItemAuthor_Author FOREIGN KEY (authorID) REFERENCES Author (authorID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE
+);
+
+CREATE TABLE checkoutTransaction (
+	transactionID SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	patronID SMALLINT UNSIGNED NOT NULL,
+	transactionDate DATETIME DEFAULT NOW() ON UPDATE NOW(),
+	paymentAmount DECIMAL(13,2) DEFAULT 0.00,
+	PRIMARY KEY (transactionID),
+	CONSTRAINT fk_checkoutTransaction_Patron FOREIGN KEY (patronID) REFERENCES Patron (patronID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE
+);
+
+CREATE TABLE checkoutTransactionItem (
+	transactionID SMALLINT UNSIGNED NOT NULL,
+	itemID SMALLINT UNSIGNED NOT NULL,
+	dueDate DATETIME NOT NULL,
+    returnDATE DATETIME NOT NULL,
+    CONSTRAINT fk_checkoutTransactionItem_checkoutTransaction FOREIGN KEY (transactionID) REFERENCES checkoutTransaction (transactionID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE,
+	CONSTRAINT fk_checkoutTransactionItem_Item FOREIGN KEY (itemID) REFERENCES Item (itemID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE
 );
