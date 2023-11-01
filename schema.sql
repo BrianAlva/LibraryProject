@@ -18,7 +18,9 @@ CREATE TABLE Patron (
 	patronLastName VARCHAR(45) NOT NULL,
 	patronFirstName VARCHAR(45) NOT NULL,
 	patronAddress VARCHAR(90) NOT NULL,
+	patronDateOfBirth DATETIME DEFAULT NOW(),
 	patronLastRenewed DATETIME DEFAULT NOW() ON UPDATE NOW(),
+	patronContactPhone BIGINT UNSIGNED NOT NULL,
 	paymentBalence DECIMAL(13,2) NOT NULL DEFAULT 0.00,
 	PRIMARY KEY (patronID)
 );
@@ -27,6 +29,12 @@ CREATE TABLE Item (
 	itemID SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	itemName VARCHAR(90) NOT NULL,
 	itemType VARCHAR(45) NOT NULL,
+	itemYearPublished DATETIME DEFAULT NOW(),
+	itemPublisher DATETIME DEFAULT NOW(),
+	itemLoC VARCHAR(16) NOT NULL,
+	itemCost DECIMAL(13,2) NOT NULL DEFAULT 0.00,
+	itemAquisitionDate DATETIME DEFAULT NOW(),
+	itemISBN VARCHAR(17) NOT NULL,
 	PRIMARY KEY (itemID),
 	CONSTRAINT chkItemType CHECK (itemType IN ('books', 'periodicals', 'recordings', 'videos'))
 );
@@ -41,6 +49,8 @@ CREATE TABLE Author (
 CREATE TABLE ItemAuthor (
 	itemID SMALLINT UNSIGNED NOT NULL,
 	authorID SMALLINT UNSIGNED NOT NULL,
+	authorID2 SMALLINT UNSIGNED,
+	authorID3 SMALLINT UNSIGNED,
 	PRIMARY KEY (itemID, authorID),
 	CONSTRAINT fk_ItemAuthor_Item FOREIGN KEY (itemID) REFERENCES Item (itemID)
 		ON DELETE RESTRICT
