@@ -31,7 +31,7 @@ CREATE TABLE Item (
 	itemTitle VARCHAR(90) NOT NULL,
 	itemType VARCHAR(45) NOT NULL,
 	itemYearPublished DATETIME DEFAULT NOW(),
-	itemPublisher DATETIME DEFAULT NOW(),
+	itemPublisher VARCHAR(16),
 	itemLoC VARCHAR(16) NOT NULL,
 	itemCost DECIMAL(13,2) NOT NULL DEFAULT 0.00,
 	itemAquisitionDate DATETIME DEFAULT NOW(),
